@@ -10,17 +10,18 @@ body {
   background: #f0f4f8;
   padding: 20px;
   color: #333;
+  line-height: 1.5; /* Melhor legibilidade */
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px; /* um pouco mais espaçado do que antes */
   color: #004d99;
 }
 
 p {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   font-weight: 600;
 }
 
@@ -30,6 +31,7 @@ p {
   justify-content: center;
   margin-bottom: 15px;
   gap: 10px;
+  flex-wrap: wrap; /* para dispositivos pequenos os botões podem quebrar linha */
 }
 
 .filtro-btn {
@@ -41,43 +43,54 @@ p {
   font-weight: 600;
   transition: background-color 0.3s ease;
   user-select: none;
+  box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+  min-width: 80px; /* largura mínima para facilitar toque */
 }
 
-.filtro-btn:hover {
+.filtro-btn:hover,
+.filtro-btn:focus {
   background: #b3d1ff;
+  outline: none;
 }
 
 .filtro-btn.ativo {
   background: #007bff;
   color: white;
+  box-shadow: 0 0 8px #0056b3;
 }
 
 /* Botão marcar todos */
 #btnMarcarTodos {
   display: block;
-  margin: 0 auto 20px auto;
-  padding: 10px 20px;
+  margin: 0 auto 25px auto;
+  padding: 12px 24px;
   border: none;
   border-radius: 25px;
   background: #28a745;
   color: white;
   font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 8px rgb(40 167 69 / 0.5);
+  min-width: 180px;
 }
 
-#btnMarcarTodos:hover {
+#btnMarcarTodos:hover,
+#btnMarcarTodos:focus {
   background: #218838;
+  box-shadow: 0 6px 12px rgb(33 136 56 / 0.7);
+  outline: none;
 }
 
 /* Barra de progresso */
 #barraProgresso {
   width: 100%;
-  height: 15px;
+  height: 18px;
   background: #ddd;
   border-radius: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   overflow: hidden;
+  box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.1);
 }
 
 #progressoPagaram {
@@ -85,14 +98,14 @@ p {
   width: 0;
   background: linear-gradient(90deg, #28a745, #85e085);
   transition: width 0.5s ease;
-  border-radius: 10px;
+  border-radius: 10px 0 0 10px;
 }
 
 /* Tabela */
 table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
   background: white;
   border-radius: 10px;
   overflow: hidden;
@@ -102,10 +115,11 @@ thead {
   background-color: #007bff;
   color: white;
   font-weight: 700;
+  user-select: none;
 }
 
 th, td {
-  padding: 12px 15px;
+  padding: 14px 18px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
@@ -136,63 +150,86 @@ tr.proximo {
 /* Inputs de nome */
 input[type="text"] {
   width: 100%;
-  padding: 6px 8px;
+  padding: 6px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 1em;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]:focus {
   outline: none;
   border-color: #007bff;
   background-color: #e7f0ff;
+  box-shadow: 0 0 5px #007bff;
 }
 
 /* Checkbox */
 input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
+  accent-color: #28a745; /* cor moderna do checkbox no browsers que suportam */
+  transition: transform 0.2s ease;
+}
+
+input[type="checkbox"]:hover,
+input[type="checkbox"]:focus {
+  transform: scale(1.1);
+  outline: none;
 }
 
 /* Botões navegação semanas */
 #btnVoltar, #btnSortear {
   background-color: #007bff;
   border: none;
-  padding: 12px 25px;
+  padding: 14px 30px;
   margin: 0 10px;
   color: white;
   font-weight: 700;
   border-radius: 25px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   user-select: none;
+  box-shadow: 0 4px 8px rgb(0 123 255 / 0.5);
 }
 
 #btnVoltar[disabled] {
   background-color: #aaa;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
-#btnVoltar:hover:not([disabled]), #btnSortear:hover {
+#btnVoltar:hover:not([disabled]),
+#btnSortear:hover,
+#btnVoltar:focus:not([disabled]),
+#btnSortear:focus {
   background-color: #0056b3;
+  box-shadow: 0 6px 12px rgb(0 86 179 / 0.7);
+  outline: none;
+}
+
+/* Container dos botões semana */
+.botoesSemana {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 /* Total arrecadado */
 #totalArrecadado {
-  font-size: 1.2em;
+  font-size: 1.3em;
   font-weight: 700;
   color: #28a745;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 }
 
 /* Animação dinheiro caindo */
 .dinheiro {
   position: fixed;
   top: -50px;
-  font-size: 24px;
+  font-size: 28px;
   animation: cair 2s linear forwards;
   z-index: 1000;
   pointer-events: none;
@@ -216,6 +253,10 @@ input[type="checkbox"] {
 
   #btnVoltar, #btnSortear, #btnMarcarTodos {
     padding: 10px 18px;
-    font-size: 0.9em;
+    font-size: 0.95em;
+  }
+
+  #filtrosPagamento {
+    gap: 6px;
   }
 }

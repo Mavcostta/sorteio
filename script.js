@@ -38,7 +38,6 @@ function salvarDados() {
   localStorage.setItem("semanaAtual", semanaAtual);
 }
 
-// Formata data dd/mm/yyyy
 function formatarData(date) {
   const dia = String(date.getDate()).padStart(2, "0");
   const mes = String(date.getMonth() + 1).padStart(2, "0");
@@ -61,14 +60,12 @@ function renderLista(filtro = "todos") {
     if (pagoNaSemanaAtual) linha.classList.add("pagou");
     if (sorteadoEstaSemana) linha.classList.add("pagou");
 
-    // Filtro
     if (filtro === "pagaram" && !pagoNaSemanaAtual) return;
     if (filtro === "naoPagaram" && pagoNaSemanaAtual) return;
 
     const tdNumero = document.createElement("td");
     tdNumero.textContent = index + 1;
 
-    // Data do sorteio da semana (index = semana - 1)
     const dataSorteioSemana = new Date(dataInicio);
     dataSorteioSemana.setDate(dataInicio.getDate() + index * 7);
     const tdData = document.createElement("td");
@@ -87,7 +84,7 @@ function renderLista(filtro = "todos") {
     tdNome.appendChild(inputNome);
 
     const tdStatus = document.createElement("td");
-    tdStatus.textContent = sorteios[semanaAtual - 1] === nome ? "Sorteado" : "";
+    tdStatus.textContent = sorteadoEstaSemana ? "Sorteado" : "";
 
     const tdCheckbox = document.createElement("td");
     const checkbox = document.createElement("input");
@@ -141,16 +138,24 @@ function atualizarSemana() {
   salvarDados();
 }
 
+// 🔒 Só avança se todos pagarem
 document.getElementById("btnSortear").addEventListener("click", () => {
   if (semanaAtual > nomes.length) {
     alert("Todas as semanas foram sorteadas.");
     return;
   }
+
+  const todosPagaram = pagamentos[semanaAtual - 1].every(pago => pago === true);
+
+  if (!todosPagaram) {
+    alert("Você precisa marcar todos os participantes como pagos antes de avançar para a próxima semana.");
+    return;
+  }
+
   const nomeSorteado = nomes[semanaAtual - 1];
   sorteios[semanaAtual - 1] = nomeSorteado;
-  pagamentos[semanaAtual - 1][semanaAtual - 1] = true; // marca pagamento do sorteado na semana
+  pagamentos[semanaAtual - 1][semanaAtual - 1] = true;
 
-  // Zera pagamentos da próxima semana
   if (semanaAtual < pagamentos.length) {
     pagamentos[semanaAtual] = Array(nomes.length).fill(false);
   }
@@ -193,5 +198,4 @@ function limparDados() {
 
 document.getElementById("btnLimpar").addEventListener("click", limparDados);
 
-// Inicializa página
 atualizarSemana();
