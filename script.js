@@ -1,23 +1,30 @@
-// Tenta carregar do localStorage ou usa valores padrão
+// Data do primeiro sorteio (sexta-feira, 23/05/2025)
+const dataInicio = new Date(2025, 4, 23); // mês 0-based (4 = maio)
+
+// Lista de nomes (pode conter repetidos)
 let nomes = JSON.parse(localStorage.getItem("nomes")) || [
-  "Tia", "Ana", "Bruno", "Carlos", "Daniela", "Eduardo", "Fernanda",
-  "Gabriel", "Helena", "Igor", "Joana", "Kleber", "Larissa", "Marcelo",
-  "Nina", "Otávio", "Patrícia", "Quésia", "Rafael", "Sandra", "Tiago",
-  "Ursula", "Vinícius", "Wesley", "Xuxa", "Yasmin", "Zeca", "Beatriz",
-  "Caio", "Diana", "Enzo", "Flávia", "Gustavo", "Heloísa", "Isabela", "José"
+  "Vanda", "Danielle", "Ana", "Vinicius", "M.de aldo", "Giselle", "Aldo",
+  "Cristiane", "Cristiane", "Cristiane", "Ilza", "Camila bety", "Graça",
+  "Bety", "Cristiane", "Hugo", "Marcia", "Graça", "IR Rosinha", "Aldo",
+  "Camila Graça", "Emerson", "Laudjane", "Cristiane", "Dane", "Cleide",
+  "Sueli", "IR Marcio", "Dane", "Socorro", "Ilza", "Dane", "Dane",
+  "A Ilza", "Dane", "Vitória"
 ];
 
-let semanaAtual = Number(localStorage.getItem("semanaAtual")) || 2;
+// Semana atual começa em 1, pois semana 1 é índice 0 no array
+let semanaAtual = Number(localStorage.getItem("semanaAtual")) || 1;
 
+// Sorteios: array de nomes sorteados por semana
 let sorteios = JSON.parse(localStorage.getItem("sorteios")) || Array(36).fill(null);
-if (!sorteios[0]) sorteios[0] = "Tia"; // Semana 1 é da Tia
+if (!sorteios[0]) sorteios[0] = "Vanda"; // semana 1 já tem o primeiro sorteado
 
+// Pagamentos: array de semanas, cada semana é array de booleanos (pagamento por índice)
 let pagamentos = JSON.parse(localStorage.getItem("pagamentos")) || Array.from({ length: 36 }, () =>
-  Object.fromEntries(nomes.map(nome => [nome, false]))
+  Array(nomes.length).fill(false)
 );
 
-// Se localStorage estava vazio, garante que a Tia está marcada como paga na semana 1
-if (!localStorage.getItem("pagamentos")) pagamentos[0]["Tia"] = true;
+// Se não tinha dados no localStorage, marca pagamento do sorteado da semana 1
+if (!localStorage.getItem("pagamentos")) pagamentos[0][0] = true;
 
 const lista = document.getElementById("listaParticipantes");
 const semanaSpan = document.getElementById("semanaAtual");
@@ -31,47 +38,41 @@ function salvarDados() {
   localStorage.setItem("semanaAtual", semanaAtual);
 }
 
+// Formata data dd/mm/yyyy
+function formatarData(date) {
+  const dia = String(date.getDate()).padStart(2, "0");
+  const mes = String(date.getMonth() + 1).padStart(2, "0");
+  const ano = date.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
 function renderLista(filtro = "todos") {
   lista.innerHTML = "";
 
   nomes.forEach((nome, index) => {
     const linha = document.createElement("tr");
 
-    // Verifica se o nome foi sorteado em alguma semana até a atual (inclusive)
     const foiSorteadoAteSemanaAtual = sorteios.slice(0, semanaAtual).includes(nome);
-
-    // Verifica se o nome é o sorteado da semana atual (semanaAtual - 1)
     const sorteadoEstaSemana = sorteios[semanaAtual - 1] === nome;
+    const pagoNaSemanaAtual = pagamentos[semanaAtual - 1][index];
 
-    // Verifica se pagou na semana atual
-    const pagoNaSemanaAtual = pagamentos[semanaAtual - 1][nome];
+    if (foiSorteadoAteSemanaAtual) linha.classList.add("sorteado");
+    if (sorteios[semanaAtual] === nome) linha.classList.add("proximo");
+    if (pagoNaSemanaAtual) linha.classList.add("pagou");
+    if (sorteadoEstaSemana) linha.classList.add("pagou");
 
-    // Aplica classe 'sorteado' se já foi sorteado em alguma semana
-    if (foiSorteadoAteSemanaAtual) {
-      linha.classList.add("sorteado");
-    }
-
-    // Aplica classe 'proximo' se for o próximo sorteado (semanaAtual)
-    if (sorteios[semanaAtual] === nome) {
-      linha.classList.add("proximo");
-    }
-
-    // Aplica classe 'pagou' se a pessoa pagou na semana atual
-    if (pagoNaSemanaAtual) {
-      linha.classList.add("pagou");
-    }
-
-    // Garante que o sorteado da semana atual também fique com fundo verde (classe 'pagou')
-    if (sorteadoEstaSemana) {
-      linha.classList.add("pagou");
-    }
-
-    // Aplica filtro
+    // Filtro
     if (filtro === "pagaram" && !pagoNaSemanaAtual) return;
     if (filtro === "naoPagaram" && pagoNaSemanaAtual) return;
 
     const tdNumero = document.createElement("td");
     tdNumero.textContent = index + 1;
+
+    // Data do sorteio da semana (index = semana - 1)
+    const dataSorteioSemana = new Date(dataInicio);
+    dataSorteioSemana.setDate(dataInicio.getDate() + index * 7);
+    const tdData = document.createElement("td");
+    tdData.textContent = formatarData(dataSorteioSemana);
 
     const tdNome = document.createElement("td");
     const inputNome = document.createElement("input");
@@ -79,15 +80,6 @@ function renderLista(filtro = "todos") {
     inputNome.value = nome;
     inputNome.addEventListener("change", (e) => {
       const novoNome = e.target.value;
-      pagamentos.forEach(sem => {
-        sem[novoNome] = sem[nome];
-        delete sem[nome];
-      });
-
-      if (sorteios.includes(nome)) {
-        sorteios = sorteios.map(s => s === nome ? novoNome : s);
-      }
-
       nomes[index] = novoNome;
       salvarDados();
       renderLista(filtro);
@@ -102,7 +94,7 @@ function renderLista(filtro = "todos") {
     checkbox.type = "checkbox";
     checkbox.checked = pagoNaSemanaAtual;
     checkbox.addEventListener("change", () => {
-      pagamentos[semanaAtual - 1][nomes[index]] = checkbox.checked;
+      pagamentos[semanaAtual - 1][index] = checkbox.checked;
       salvarDados();
       atualizarBarra();
       atualizarTotal();
@@ -111,6 +103,7 @@ function renderLista(filtro = "todos") {
     tdCheckbox.appendChild(checkbox);
 
     linha.appendChild(tdNumero);
+    linha.appendChild(tdData);
     linha.appendChild(tdNome);
     linha.appendChild(tdStatus);
     linha.appendChild(tdCheckbox);
@@ -122,15 +115,19 @@ function renderLista(filtro = "todos") {
 }
 
 function atualizarBarra() {
-  const pagos = Object.values(pagamentos[semanaAtual - 1]).filter(v => v).length;
+  const pagos = pagamentos[semanaAtual - 1].filter(v => v).length;
   const total = nomes.length;
   progresso.style.width = `${(pagos / total) * 100}%`;
 }
 
 function atualizarTotal() {
-  const total = pagamentos.slice(0, semanaAtual).reduce((soma, semana) => {
-    return soma + Object.values(semana).filter(v => v).length * 100;
-  }, 0);
+  let totalPagamentos = 0;
+  for (let i = 0; i < semanaAtual; i++) {
+    pagamentos[i].forEach(pago => {
+      if (pago) totalPagamentos++;
+    });
+  }
+  const total = totalPagamentos * 100;
   totalArrecadado.textContent = `R$ ${total.toLocaleString("pt-BR", {
     minimumFractionDigits: 2,
   })}`;
@@ -145,13 +142,18 @@ function atualizarSemana() {
 }
 
 document.getElementById("btnSortear").addEventListener("click", () => {
-  if (semanaAtual >= 36) return alert("Todas as semanas foram sorteadas.");
+  if (semanaAtual > nomes.length) {
+    alert("Todas as semanas foram sorteadas.");
+    return;
+  }
+  const nomeSorteado = nomes[semanaAtual - 1];
+  sorteios[semanaAtual - 1] = nomeSorteado;
+  pagamentos[semanaAtual - 1][semanaAtual - 1] = true; // marca pagamento do sorteado na semana
 
-  const proximoIndex = semanaAtual;
-  const nomeSorteado = nomes[proximoIndex];
-
-  sorteios[semanaAtual] = nomeSorteado;
-  pagamentos[semanaAtual][nomeSorteado] = true;
+  // Zera pagamentos da próxima semana
+  if (semanaAtual < pagamentos.length) {
+    pagamentos[semanaAtual] = Array(nomes.length).fill(false);
+  }
 
   semanaAtual++;
   atualizarSemana();
@@ -173,15 +175,23 @@ document.querySelectorAll(".filtro-btn").forEach(btn => {
 });
 
 document.getElementById("btnMarcarTodos").addEventListener("click", () => {
-  const todosPagos = Object.values(pagamentos[semanaAtual - 1]).every(v => v);
-  nomes.forEach(nome => {
-    pagamentos[semanaAtual - 1][nome] = !todosPagos;
-  });
+  const todosPagos = pagamentos[semanaAtual - 1].every(v => v);
+  pagamentos[semanaAtual - 1] = pagamentos[semanaAtual - 1].map(() => !todosPagos);
   salvarDados();
   atualizarBarra();
   atualizarTotal();
   renderLista(document.querySelector(".filtro-btn.ativo").dataset.filtro);
 });
 
-// Inicialização
+function limparDados() {
+  localStorage.removeItem("nomes");
+  localStorage.removeItem("sorteios");
+  localStorage.removeItem("pagamentos");
+  localStorage.removeItem("semanaAtual");
+  location.reload();
+}
+
+document.getElementById("btnLimpar").addEventListener("click", limparDados);
+
+// Inicializa página
 atualizarSemana();
