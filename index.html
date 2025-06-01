@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sorteio Semanal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>Sorteio Semanal</h1>
+  <p>Semana atual: <span id="semanaAtual">2</span> de 36</p>
+  <p id="totalArrecadado">R$ 0,00</p>
+
+  <div id="filtrosPagamento">
+    <button class="filtro-btn ativo" data-filtro="todos">Todos</button>
+    <button class="filtro-btn" data-filtro="pagaram">Já Pagaram</button>
+    <button class="filtro-btn" data-filtro="naoPagaram">Não Pagaram</button>
+  </div>
+
+  <button id="btnMarcarTodos">Marcar Todos</button>
+
+
+  <div id="barraProgresso">
+    <div id="progressoPagaram"></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nº</th>
+        <th>Nome</th>
+        <th>Status Sorteio</th>
+        <th>Já Pagou?</th>
+      </tr>
+    </thead>
+    <tbody id="listaParticipantes"></tbody>
+  </table>
+
+  <div style="margin-top: 30px; text-align: center;">
+    <button id="btnVoltar" disabled>← Voltar Semana</button>
+    <button id="btnSortear">Sortear Próximo →</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f7fa;
+  color: #333;
+  padding: 30px 20px;
+  max-width: 720px;
+  margin: 0 auto;
+  user-select: none;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #222;
+  font-weight: 700;
+  font-size: 2.2rem;
+  text-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+p {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: #555;
+  font-weight: 600;
+}
+
+/* Botões principais */
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  margin-right: 12px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 3px 6px rgba(0,123,255,0.3);
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+button:disabled {
+  background-color: #aacbff;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+button:hover:not(:disabled) {
+  background-color: #0056b3;
+  box-shadow: 0 5px 12px rgba(0,86,179,0.5);
+}
+
+/* Filtros de pagamento */
+#filtrosPagamento {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 25px;
+  gap: 10px;
+}
+
+.filtro-btn {
+  background-color: #e2e6ea;
+  color: #333;
+  padding: 8px 18px;
+  border-radius: 25px;
+  font-weight: 600;
+  box-shadow: inset 0 0 5px #cdd4db;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.filtro-btn:hover {
+  background-color: #d0d8e0;
+}
+
+.filtro-btn.ativo {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,123,255,0.4);
+  font-weight: 700;
+}
+
+/* Barra de progresso */
+#barraProgresso {
+  height: 22px;
+  background-color: #e1e7ed;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: inset 0 1px 3px rgba(255,255,255,0.8);
+}
+
+#progressoPagaram {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, #28a745, #218838);
+  border-radius: 15px 0 0 15px;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 8px #28a745aa;
+}
+
+/* Tabela */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.05);
+}
+
+th, td {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+thead th {
+  color: #555;
+  font-weight: 700;
+  border-bottom: 2px solid #ddd;
+}
+
+tbody tr {
+  background-color: white;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.06);
+  user-select: none;
+}
+
+tbody tr:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+tbody tr:hover {
+  background-color: #f0f7ff;
+}
+
+/* Destaques linha */
+tr.sorteado {
+  /* Fundo verde claro para sorteados */
+  background-color: #d4edda;
+  box-shadow: 0 0 15px #28a74544;
+  /* Garantir que o fundo fique visível (sem !important, para melhor prática) */
+}
+
+tr.proximo {
+  font-weight: 700;
+  color: #004085;
+}
+
+tr.pagou {
+  font-style: italic;
+  color: #155724;
+}
+
+/* Inputs nome */
+td input[type="text"] {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+td input[type="text"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 6px #007bffaa;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  transform: scale(1.4);
+  cursor: pointer;
+  transition: box-shadow 0.3s ease;
+  margin-left: 6px;
+}
+
+input[type="checkbox"]:hover {
+  box-shadow: 0 0 8px #007bff88;
+}
+
+/* Responsividade */
+@media (max-width: 550px) {
+  body {
+    padding: 20px 12px;
+  }
+
+  button, .filtro-btn {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 10px 8px;
+    font-size: 0.9rem;
+  }
+
+  input[type="checkbox"] {
+    transform: scale(1.2);
+  }
+}
