@@ -191,6 +191,12 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
+td:nth-child(3) {
+  min-width: 120px;
+  max-width: 180px;
+  word-break: break-word;
+}
+
 tbody tr:hover {
   background-color: #f9f9f9;
   cursor: default;
@@ -217,6 +223,8 @@ tr.proximo {
 /* Inputs de nome */
 input[type="text"] {
   width: 100%;
+  min-width: 120px;
+  max-width: 220px;
   padding: 6px 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -318,6 +326,18 @@ input[type="checkbox"]:focus {
   td {
     font-size: 0.85em;
     padding: 8px 10px;
+  }
+
+  td:nth-child(3) {
+    min-width: 90px;
+    max-width: 120px;
+    font-size: 0.95em;
+  }
+
+  input[type="text"] {
+    min-width: 70px;
+    max-width: 110px;
+    font-size: 0.95em;
   }
 
   #btnVoltar,
