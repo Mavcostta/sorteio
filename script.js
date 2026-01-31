@@ -4,41 +4,40 @@ const dataInicio = new Date(2026, 0, 30); // mês 0-based (0 = janeiro)
 // Lista de nomes (pode conter repetidos)
 let nomes = JSON.parse(localStorage.getItem("nomes")) || [
   "Vanda",
-  "Danielle",
-  "Ana",
-  "Vinicius",
-  "M.de aldo",
-  "Giselle",
-  "Aldo",
   "Cristiane",
   "Cristiane",
-  "Cristiane",
+  "Noemi",
+  "Noemi",
+  "Gil",
+  "Dude",
+  "Diza",
+  "Graça",
   "Ilza",
-  "Camila bety",
-  "Graça",
-  "Bety",
-  "Cristiane",
-  "Hugo",
-  "Marcia",
-  "Graça",
-  "IR Rosinha",
   "Aldo",
-  "Camila Graça",
-  "Emerson",
-  "Laudjane",
+  "Aldo",
+  "A: Ilza",
+  "Ana",
+  "Ana",
   "Cristiane",
-  "Dane",
-  "Cleide",
-  "Sueli",
-  "IR Marcio",
+  "Cristiane",
+  "Deja",
+  "Marcia",
+  "Marcia",
+  "Cristiane",
+  "Ir. Marcio",
+  "Ir. Rosa",
   "Dane",
   "Socorro",
+  "Emerson",
   "Ilza",
+  "Suely",
+  "Cleide",
+  "Dane",
+  "Laudjane",
+  "Ir. Alex",
   "Dane",
   "Dane",
-  "A Ilza",
-  "Dane",
-  "Vitória",
+  "Vitória"
 ];
 
 // Semana atual começa em 1, pois semana 1 é índice 0 no array
@@ -46,13 +45,13 @@ let semanaAtual = Number(localStorage.getItem("semanaAtual")) || 1;
 
 // Sorteios: array de nomes sorteados por semana
 let sorteios =
-  JSON.parse(localStorage.getItem("sorteios")) || Array(36).fill(null);
-if (!sorteios[0]) sorteios[0] = "Vanda"; // semana 1 já tem o primeiro sorteado
+  JSON.parse(localStorage.getItem("sorteios")) || Array(35).fill(null);
+if (!sorteios[0]) sorteios[0] = nomes[0]; // semana 1 já tem o primeiro sorteado
 
 // Pagamentos: array de semanas, cada semana é array de booleanos (pagamento por índice)
 let pagamentos =
   JSON.parse(localStorage.getItem("pagamentos")) ||
-  Array.from({ length: 36 }, () => Array(nomes.length).fill(false));
+  Array.from({ length: 35 }, () => Array(nomes.length).fill(false));
 
 // Se não tinha dados no localStorage, marca pagamento do sorteado da semana 1
 if (!localStorage.getItem("pagamentos")) pagamentos[0][0] = true;
