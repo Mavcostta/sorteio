@@ -1,65 +1,147 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Sorteio Semanal</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#0066cc" />
-<script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sorteio Semanal</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#0066cc" />
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("service-worker.js");
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Sorteio Semanal</h1>
 
-</head>
-<body>
+    <!-- Cabeçalho fixo -->
+    <div class="topo-fixo" role="banner">
+      <p>Semana atual: <span id="semanaAtual">1</span> de 36</p>
 
-  <h1>Sorteio Semanal</h1>
+      <p id="totalArrecadado" aria-live="polite" aria-atomic="true">R$ 0,00</p>
 
-  <!-- Cabeçalho fixo -->
-  <div class="topo-fixo" role="banner">
-    <p>Semana atual: <span id="semanaAtual">1</span> de 36</p>
-    
-    <p id="totalArrecadado" aria-live="polite" aria-atomic="true">R$ 0,00</p>
+      <div id="filtrosPagamento" role="group" aria-label="Filtros de pagamento">
+        <button
+          class="filtro-btn ativo"
+          data-filtro="todos"
+          title="Mostrar todos os participantes"
+        >
+          Todos
+        </button>
+        <button
+          class="filtro-btn"
+          data-filtro="pagaram"
+          title="Mostrar apenas os que já pagaram"
+        >
+          Já Pagaram
+        </button>
+        <button
+          class="filtro-btn"
+          data-filtro="naoPagaram"
+          title="Mostrar apenas os que ainda não pagaram"
+        >
+          Não Pagaram
+        </button>
+      </div>
 
-    <div id="filtrosPagamento" role="group" aria-label="Filtros de pagamento">
-      <button class="filtro-btn ativo" data-filtro="todos" title="Mostrar todos os participantes">Todos</button>
-      <button class="filtro-btn" data-filtro="pagaram" title="Mostrar apenas os que já pagaram">Já Pagaram</button>
-      <button class="filtro-btn" data-filtro="naoPagaram" title="Mostrar apenas os que ainda não pagaram">Não Pagaram</button>
+      <button
+        id="btnMarcarTodos"
+        title="Marcar ou desmarcar todos os pagamentos da semana atual"
+      >
+        Marcar Todos
+      </button>
+
+      <div
+        id="barraProgresso"
+        role="progressbar"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        aria-label="Progresso de pagamentos"
+      >
+        <div id="progressoPagaram"></div>
+      </div>
+
+      <div class="botoesSemana">
+        <button id="btnVoltar" disabled title="Voltar para a semana anterior">
+          ← Voltar Semana
+        </button>
+        <button id="btnSortear" title="Sortear o próximo participante">
+          Sortear Próximo →
+        </button>
+      </div>
     </div>
 
-    <button id="btnMarcarTodos" title="Marcar ou desmarcar todos os pagamentos da semana atual">Marcar Todos</button>
+    <button id="btnLimpar" title="Resetar todos os dados e começar do zero">
+      Resetar Sorteio
+    </button>
 
-    <div id="barraProgresso" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progresso de pagamentos">
-      <div id="progressoPagaram"></div>
+    <button id="btnNovoSorteio" title="Configurar novo sorteio">
+      Novo Sorteio
+    </button>
+    <button id="btnEditarSorteio" title="Editar sorteio atual">
+      Editar Sorteio
+    </button>
+
+    <!-- Tabela com rolagem -->
+    <div
+      id="tabelaContainer"
+      role="region"
+      aria-label="Lista de participantes e status de pagamento"
+    >
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Nº</th>
+            <th scope="col">Data Sorteio</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Status Sorteio</th>
+            <th scope="col">Já Pagou?</th>
+          </tr>
+        </thead>
+        <tbody id="listaParticipantes"></tbody>
+      </table>
     </div>
 
-    <div class="botoesSemana">
-      <button id="btnVoltar" disabled title="Voltar para a semana anterior">← Voltar Semana</button>
-      <button id="btnSortear" title="Sortear o próximo participante">Sortear Próximo →</button>
+    <script src="script.js"></script>
+
+    <!-- Modal Novo Sorteio -->
+    <div id="modalNovoSorteio" class="modal" style="display: none">
+      <div class="modal-content">
+        <span id="fecharModalNovoSorteio" class="close">&times;</span>
+        <h2 id="tituloModalSorteio">Novo Sorteio</h2>
+        <form id="formNovoSorteio">
+          <label for="inputSemanas">Quantidade de semanas:</label>
+          <input
+            type="number"
+            id="inputSemanas"
+            min="1"
+            max="100"
+            value="36"
+            required
+          /><br /><br />
+          <label for="inputValor">Valor por semana (R$):</label>
+          <input
+            type="number"
+            id="inputValor"
+            min="1"
+            value="100"
+            required
+          /><br /><br />
+          <label for="inputParticipantes">Participantes (um por linha):</label
+          ><br />
+          <textarea
+            id="inputParticipantes"
+            rows="8"
+            style="width: 100%"
+            required
+          ></textarea
+          ><br /><br />
+          <button type="submit">Salvar e Iniciar Sorteio</button>
+        </form>
+      </div>
     </div>
-  </div>
-
-  <button id="btnLimpar" title="Resetar todos os dados e começar do zero">Resetar Sorteio</button>
-
-  <!-- Tabela com rolagem -->
-  <div id="tabelaContainer" role="region" aria-label="Lista de participantes e status de pagamento">
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Nº</th>
-          <th scope="col">Data Sorteio</th>
-          <th scope="col">Nome</th>
-          <th scope="col">Status Sorteio</th>
-          <th scope="col">Já Pagou?</th>
-        </tr>
-      </thead>
-      <tbody id="listaParticipantes"></tbody>
-    </table>
-  </div>
-
-  <script src="script.js"></script>
-</body>
+  </body>
 </html>
