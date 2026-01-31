@@ -1,3 +1,69 @@
+/* Modal Novo Sorteio */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1001;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+  background-color: #fff;
+  margin: 60px auto;
+  padding: 30px 20px 20px 20px;
+  border: 1px solid #888;
+  width: 95%;
+  max-width: 400px;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  position: relative;
+}
+.close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 18px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover,
+.close:focus {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+#formNovoSorteio label {
+  font-weight: 600;
+}
+#formNovoSorteio input,
+#formNovoSorteio textarea {
+  margin-bottom: 10px;
+  width: 100%;
+  padding: 7px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1em;
+}
+#formNovoSorteio button[type="submit"] {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 0;
+  width: 100%;
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#formNovoSorteio button[type="submit"]:hover {
+  background: #0056b3;
+}
 /* Reset básico */
 * {
   box-sizing: border-box;
@@ -118,7 +184,8 @@ thead {
   user-select: none;
 }
 
-th, td {
+th,
+td {
   padding: 14px 18px;
   text-align: center;
   border-bottom: 1px solid #ddd;
@@ -180,7 +247,8 @@ input[type="checkbox"]:focus {
 }
 
 /* Botões navegação semanas */
-#btnVoltar, #btnSortear {
+#btnVoltar,
+#btnSortear {
   background-color: #007bff;
   border: none;
   padding: 14px 30px;
@@ -246,12 +314,15 @@ input[type="checkbox"]:focus {
 
 /* Responsividade básica */
 @media (max-width: 600px) {
-  th, td {
+  th,
+  td {
     font-size: 0.85em;
     padding: 8px 10px;
   }
 
-  #btnVoltar, #btnSortear, #btnMarcarTodos {
+  #btnVoltar,
+  #btnSortear,
+  #btnMarcarTodos {
     padding: 10px 18px;
     font-size: 0.95em;
   }

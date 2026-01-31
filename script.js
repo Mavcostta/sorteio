@@ -1,33 +1,66 @@
-// Data do primeiro sorteio (sexta-feira, 23/05/2025)
-const dataInicio = new Date(2025, 4, 23); // mês 0-based (4 = maio)
+// Data do primeiro sorteio (quinta-feira, 30/01/2026)
+const dataInicio = new Date(2026, 0, 30); // mês 0-based (0 = janeiro)
 
 // Lista de nomes (pode conter repetidos)
 let nomes = JSON.parse(localStorage.getItem("nomes")) || [
-  "Vanda", "Danielle", "Ana", "Vinicius", "M.de aldo", "Giselle", "Aldo",
-  "Cristiane", "Cristiane", "Cristiane", "Ilza", "Camila bety", "Graça",
-  "Bety", "Cristiane", "Hugo", "Marcia", "Graça", "IR Rosinha", "Aldo",
-  "Camila Graça", "Emerson", "Laudjane", "Cristiane", "Dane", "Cleide",
-  "Sueli", "IR Marcio", "Dane", "Socorro", "Ilza", "Dane", "Dane",
-  "A Ilza", "Dane", "Vitória"
+  "Vanda",
+  "Danielle",
+  "Ana",
+  "Vinicius",
+  "M.de aldo",
+  "Giselle",
+  "Aldo",
+  "Cristiane",
+  "Cristiane",
+  "Cristiane",
+  "Ilza",
+  "Camila bety",
+  "Graça",
+  "Bety",
+  "Cristiane",
+  "Hugo",
+  "Marcia",
+  "Graça",
+  "IR Rosinha",
+  "Aldo",
+  "Camila Graça",
+  "Emerson",
+  "Laudjane",
+  "Cristiane",
+  "Dane",
+  "Cleide",
+  "Sueli",
+  "IR Marcio",
+  "Dane",
+  "Socorro",
+  "Ilza",
+  "Dane",
+  "Dane",
+  "A Ilza",
+  "Dane",
+  "Vitória",
 ];
 
 // Semana atual começa em 1, pois semana 1 é índice 0 no array
 let semanaAtual = Number(localStorage.getItem("semanaAtual")) || 1;
 
 // Sorteios: array de nomes sorteados por semana
-let sorteios = JSON.parse(localStorage.getItem("sorteios")) || Array(36).fill(null);
+let sorteios =
+  JSON.parse(localStorage.getItem("sorteios")) || Array(36).fill(null);
 if (!sorteios[0]) sorteios[0] = "Vanda"; // semana 1 já tem o primeiro sorteado
 
 // Pagamentos: array de semanas, cada semana é array de booleanos (pagamento por índice)
-let pagamentos = JSON.parse(localStorage.getItem("pagamentos")) || Array.from({ length: 36 }, () =>
-  Array(nomes.length).fill(false)
-);
+let pagamentos =
+  JSON.parse(localStorage.getItem("pagamentos")) ||
+  Array.from({ length: 36 }, () => Array(nomes.length).fill(false));
 
 // Se não tinha dados no localStorage, marca pagamento do sorteado da semana 1
 if (!localStorage.getItem("pagamentos")) pagamentos[0][0] = true;
 
 const lista = document.getElementById("listaParticipantes");
 const semanaSpan = document.getElementById("semanaAtual");
+const tituloPrincipal = document.querySelector("h1");
+const spanTotalSemanas = document.createElement("span");
 const progresso = document.getElementById("progressoPagaram");
 const totalArrecadado = document.getElementById("totalArrecadado");
 
@@ -51,7 +84,9 @@ function renderLista(filtro = "todos") {
   nomes.forEach((nome, index) => {
     const linha = document.createElement("tr");
 
-    const foiSorteadoAteSemanaAtual = sorteios.slice(0, semanaAtual).includes(nome);
+    const foiSorteadoAteSemanaAtual = sorteios
+      .slice(0, semanaAtual)
+      .includes(nome);
     const sorteadoEstaSemana = sorteios[semanaAtual - 1] === nome;
     const pagoNaSemanaAtual = pagamentos[semanaAtual - 1][index];
 
@@ -112,7 +147,7 @@ function renderLista(filtro = "todos") {
 }
 
 function atualizarBarra() {
-  const pagos = pagamentos[semanaAtual - 1].filter(v => v).length;
+  const pagos = pagamentos[semanaAtual - 1].filter((v) => v).length;
   const total = nomes.length;
   progresso.style.width = `${(pagos / total) * 100}%`;
 }
@@ -120,7 +155,7 @@ function atualizarBarra() {
 function atualizarTotal() {
   let totalPagamentos = 0;
   for (let i = 0; i < semanaAtual; i++) {
-    pagamentos[i].forEach(pago => {
+    pagamentos[i].forEach((pago) => {
       if (pago) totalPagamentos++;
     });
   }
@@ -131,7 +166,18 @@ function atualizarTotal() {
 }
 
 function atualizarSemana() {
-  semanaSpan.textContent = semanaAtual;
+  // Atualiza o texto do título e do total de semanas
+  let totalSemanas = sorteios.length;
+  // Corrige o texto do cabeçalho para não duplicar 'de X'
+  const semanaAtualP = document.querySelector(".topo-fixo p");
+  if (semanaAtualP) {
+    semanaAtualP.innerHTML = `Semana atual: <span id=\"semanaAtual\">${semanaAtual}</span> de ${totalSemanas}`;
+  }
+  if (tituloPrincipal) {
+    tituloPrincipal.textContent = `Sorteio Semanal (${totalSemanas} semanas)`;
+  }
+  // Atualiza referência global do span
+  window.semanaSpan = document.getElementById("semanaAtual");
   document.getElementById("btnVoltar").disabled = semanaAtual === 1;
   renderLista(document.querySelector(".filtro-btn.ativo").dataset.filtro);
   atualizarTotal();
@@ -145,10 +191,14 @@ document.getElementById("btnSortear").addEventListener("click", () => {
     return;
   }
 
-  const todosPagaram = pagamentos[semanaAtual - 1].every(pago => pago === true);
+  const todosPagaram = pagamentos[semanaAtual - 1].every(
+    (pago) => pago === true
+  );
 
   if (!todosPagaram) {
-    alert("Você precisa marcar todos os participantes como pagos antes de avançar para a próxima semana.");
+    alert(
+      "Você precisa marcar todos os participantes como pagos antes de avançar para a próxima semana."
+    );
     return;
   }
 
@@ -171,21 +221,137 @@ document.getElementById("btnVoltar").addEventListener("click", () => {
   }
 });
 
-document.querySelectorAll(".filtro-btn").forEach(btn => {
+document.querySelectorAll(".filtro-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
-    document.querySelectorAll(".filtro-btn").forEach(b => b.classList.remove("ativo"));
+    document
+      .querySelectorAll(".filtro-btn")
+      .forEach((b) => b.classList.remove("ativo"));
     btn.classList.add("ativo");
     renderLista(btn.dataset.filtro);
   });
 });
 
 document.getElementById("btnMarcarTodos").addEventListener("click", () => {
-  const todosPagos = pagamentos[semanaAtual - 1].every(v => v);
-  pagamentos[semanaAtual - 1] = pagamentos[semanaAtual - 1].map(() => !todosPagos);
+  const todosPagos = pagamentos[semanaAtual - 1].every((v) => v);
+  pagamentos[semanaAtual - 1] = pagamentos[semanaAtual - 1].map(
+    () => !todosPagos
+  );
   salvarDados();
   atualizarBarra();
   atualizarTotal();
   renderLista(document.querySelector(".filtro-btn.ativo").dataset.filtro);
+});
+
+// --- NOVO SORTEIO ---
+
+document.addEventListener("DOMContentLoaded", function () {
+  const btnNovoSorteio = document.getElementById("btnNovoSorteio");
+  const btnEditarSorteio = document.getElementById("btnEditarSorteio");
+  const modalNovoSorteio = document.getElementById("modalNovoSorteio");
+  const fecharModalNovoSorteio = document.getElementById(
+    "fecharModalNovoSorteio"
+  );
+  const formNovoSorteio = document.getElementById("formNovoSorteio");
+  const inputSemanas = document.getElementById("inputSemanas");
+  const inputValor = document.getElementById("inputValor");
+  const inputParticipantes = document.getElementById("inputParticipantes");
+  const tituloModalSorteio = document.getElementById("tituloModalSorteio");
+
+  let modoEdicao = false;
+
+  if (
+    !btnNovoSorteio ||
+    !btnEditarSorteio ||
+    !modalNovoSorteio ||
+    !fecharModalNovoSorteio ||
+    !formNovoSorteio ||
+    !inputSemanas ||
+    !inputValor ||
+    !inputParticipantes ||
+    !tituloModalSorteio
+  ) {
+    alert(
+      "Erro ao carregar elementos do Sorteio. Atualize a página ou verifique o HTML."
+    );
+    return;
+  }
+
+  btnNovoSorteio.addEventListener("click", () => {
+    modoEdicao = false;
+    tituloModalSorteio.textContent = "Novo Sorteio";
+    inputParticipantes.value = nomes.join("\n");
+    inputSemanas.value = sorteios.length;
+    inputValor.value = 100;
+    modalNovoSorteio.style.display = "block";
+  });
+
+  btnEditarSorteio.addEventListener("click", () => {
+    modoEdicao = true;
+    tituloModalSorteio.textContent = "Editar Sorteio";
+    inputParticipantes.value = nomes.join("\n");
+    inputSemanas.value = sorteios.length;
+    inputValor.value = 100;
+    modalNovoSorteio.style.display = "block";
+  });
+
+  fecharModalNovoSorteio.addEventListener("click", () => {
+    modalNovoSorteio.style.display = "none";
+  });
+
+  window.addEventListener("click", (e) => {
+    if (e.target === modalNovoSorteio) modalNovoSorteio.style.display = "none";
+  });
+
+  formNovoSorteio.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const novasSemanas = Math.max(1, parseInt(inputSemanas.value));
+    const novoValor = Math.max(1, parseInt(inputValor.value));
+    const novosNomes = inputParticipantes.value
+      .split(/\r?\n/)
+      .map((n) => n.trim())
+      .filter((n) => n);
+    if (novosNomes.length < novasSemanas) {
+      alert(
+        "A quantidade de participantes deve ser igual ou maior que o número de semanas."
+      );
+      return;
+    }
+    nomes = novosNomes;
+    if (modoEdicao) {
+      // Mantém semanaAtual e sorteios já realizados, mas ajusta arrays se necessário
+      if (novasSemanas !== sorteios.length) {
+        sorteios.length = novasSemanas;
+        pagamentos.length = novasSemanas;
+        for (let i = 0; i < novasSemanas; i++) {
+          if (!pagamentos[i]) pagamentos[i] = Array(nomes.length).fill(false);
+        }
+      }
+      for (let i = 0; i < pagamentos.length; i++) {
+        pagamentos[i].length = nomes.length;
+        for (let j = 0; j < nomes.length; j++) {
+          if (typeof pagamentos[i][j] !== "boolean") pagamentos[i][j] = false;
+        }
+      }
+      salvarDados();
+      modalNovoSorteio.style.display = "none";
+      atualizarSemana();
+      alert("Sorteio editado!");
+    } else {
+      semanaAtual = 1;
+      sorteios = Array(novasSemanas).fill(null);
+      pagamentos = Array.from({ length: novasSemanas }, () =>
+        Array(nomes.length).fill(false)
+      );
+      // Marca o primeiro sorteado se já quiser (opcional)
+      // sorteios[0] = nomes[0];
+      // pagamentos[0][0] = true;
+      localStorage.clear();
+      salvarDados();
+      modalNovoSorteio.style.display = "none";
+      atualizarSemana();
+      alert("Novo sorteio iniciado!");
+    }
+  });
 });
 
 function limparDados() {
