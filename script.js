@@ -179,7 +179,7 @@ function atualizarSemana() {
     semanaAtualP.innerHTML = `Semana atual: <span id=\"semanaAtual\">${semanaAtual}</span> de ${totalSemanas}`;
   }
   if (tituloPrincipal) {
-    tituloPrincipal.textContent = "Sorteio Semanal da Família";
+    tituloPrincipal.textContent = "Sorteio Semanal";
   }
   // Atualiza referência global do span
   window.semanaSpan = document.getElementById("semanaAtual");
