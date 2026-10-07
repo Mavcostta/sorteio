@@ -1,69 +1,3 @@
-/* Modal Novo Sorteio */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1001;
-  left: 0;
-  top: 0;
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.modal-content {
-  background-color: #fff;
-  margin: 60px auto;
-  padding: 30px 20px 20px 20px;
-  border: 1px solid #888;
-  width: 95%;
-  max-width: 400px;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  position: relative;
-}
-.close {
-  color: #aaa;
-  position: absolute;
-  top: 10px;
-  right: 18px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
-}
-.close:hover,
-.close:focus {
-  color: #007bff;
-  text-decoration: none;
-  cursor: pointer;
-}
-#formNovoSorteio label {
-  font-weight: 600;
-}
-#formNovoSorteio input,
-#formNovoSorteio textarea {
-  margin-bottom: 10px;
-  width: 100%;
-  padding: 7px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 1em;
-}
-#formNovoSorteio button[type="submit"] {
-  background: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  padding: 10px 0;
-  width: 100%;
-  font-weight: 700;
-  font-size: 1.1em;
-  margin-top: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-#formNovoSorteio button[type="submit"]:hover {
-  background: #0056b3;
-}
 /* Reset básico */
 * {
   box-sizing: border-box;
@@ -73,22 +7,57 @@
 
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #f0f4f8;
-  padding: 20px;
-  color: #333;
-  line-height: 1.5; /* Melhor legibilidade */
+  background: #f3f6fa;
+  padding: 24px 16px;
+  color: #263445;
+  line-height: 1.5;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 h1 {
   text-align: center;
-  margin-bottom: 15px; /* um pouco mais espaçado do que antes */
-  color: #004d99;
+  margin-bottom: 4px;
+  color: #174f7a;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+}
+
+.cabecalho {
+  margin-bottom: 20px;
+}
+
+.subtitulo {
+  margin-bottom: 0;
+  color: #536578;
+  font-weight: 400;
+}
+
+.instrucoes {
+  max-width: 520px;
+  margin: 10px auto 0;
+  color: #536578;
+  font-size: 0.95rem;
+  font-weight: 400;
 }
 
 p {
   text-align: center;
   margin-bottom: 12px;
   font-weight: 600;
+}
+
+.topo-fixo {
+  margin-bottom: 18px;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #e0e7ef;
+  border-radius: 14px;
+  box-shadow: 0 3px 12px rgb(25 55 85 / 0.07);
+}
+
+.semana-atual {
+  color: #174f7a;
+  font-size: 1.2rem;
 }
 
 /* Botões de filtro */
@@ -101,7 +70,7 @@ p {
 }
 
 .filtro-btn {
-  background: #e0e0e0;
+  background: #e8edf3;
   border: none;
   padding: 8px 16px;
   border-radius: 20px;
@@ -110,7 +79,8 @@ p {
   transition: background-color 0.3s ease;
   user-select: none;
   box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
-  min-width: 80px; /* largura mínima para facilitar toque */
+  min-width: 90px;
+  min-height: 44px;
 }
 
 .filtro-btn:hover,
@@ -120,9 +90,9 @@ p {
 }
 
 .filtro-btn.ativo {
-  background: #007bff;
+  background: #1769aa;
   color: white;
-  box-shadow: 0 0 8px #0056b3;
+  box-shadow: 0 2px 6px rgb(23 105 170 / 0.25);
 }
 
 /* Botão marcar todos */
@@ -132,29 +102,30 @@ p {
   padding: 12px 24px;
   border: none;
   border-radius: 25px;
-  background: #28a745;
+  background: #26834a;
   color: white;
   font-weight: 700;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 4px 8px rgb(40 167 69 / 0.5);
-  min-width: 180px;
+  box-shadow: 0 2px 6px rgb(38 131 74 / 0.2);
+  min-width: 200px;
+  min-height: 48px;
 }
 
 #btnMarcarTodos:hover,
 #btnMarcarTodos:focus {
-  background: #218838;
-  box-shadow: 0 6px 12px rgb(33 136 56 / 0.7);
+  background: #1f6e3e;
+  box-shadow: 0 3px 8px rgb(31 110 62 / 0.25);
   outline: none;
 }
 
 /* Barra de progresso */
 #barraProgresso {
   width: 100%;
-  height: 18px;
-  background: #ddd;
+  height: 14px;
+  background: #e1e7ed;
   border-radius: 10px;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   overflow: hidden;
   box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.1);
 }
@@ -162,23 +133,29 @@ p {
 #progressoPagaram {
   height: 100%;
   width: 0;
-  background: linear-gradient(90deg, #28a745, #85e085);
+  background: #26834a;
   transition: width 0.5s ease;
   border-radius: 10px 0 0 10px;
+}
+
+#tabelaContainer {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgb(25 55 85 / 0.07);
 }
 
 /* Tabela */
 table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.06);
   background: white;
   border-radius: 10px;
   overflow: hidden;
 }
 
 thead {
-  background-color: #007bff;
+  background-color: #1769aa;
   color: white;
   font-weight: 700;
   user-select: none;
@@ -186,9 +163,9 @@ thead {
 
 th,
 td {
-  padding: 14px 18px;
+  padding: 13px 14px;
   text-align: center;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #e5eaf0;
 }
 
 td:nth-child(3) {
@@ -225,8 +202,8 @@ input[type="text"] {
   width: 100%;
   min-width: 120px;
   max-width: 220px;
-  padding: 6px 10px;
-  border: 1px solid #ccc;
+  padding: 9px 10px;
+  border: 1px solid #cbd5df;
   border-radius: 6px;
   font-size: 1em;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -241,10 +218,10 @@ input[type="text"]:focus {
 
 /* Checkbox */
 input[type="checkbox"] {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
-  accent-color: #28a745; /* cor moderna do checkbox no browsers que suportam */
+  accent-color: #26834a;
   transition: transform 0.2s ease;
 }
 
@@ -257,21 +234,22 @@ input[type="checkbox"]:focus {
 /* Botões navegação semanas */
 #btnVoltar,
 #btnSortear {
-  background-color: #007bff;
+  background-color: #1769aa;
   border: none;
-  padding: 14px 30px;
-  margin: 0 10px;
+  padding: 13px 22px;
+  margin: 4px;
   color: white;
   font-weight: 700;
   border-radius: 25px;
+  min-height: 48px;
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   user-select: none;
-  box-shadow: 0 4px 8px rgb(0 123 255 / 0.5);
+  box-shadow: 0 2px 6px rgb(23 105 170 / 0.2);
 }
 
 #btnVoltar[disabled] {
-  background-color: #aaa;
+  background-color: #7d8995;
   cursor: not-allowed;
   box-shadow: none;
 }
@@ -280,23 +258,25 @@ input[type="checkbox"]:focus {
 #btnSortear:hover,
 #btnVoltar:focus:not([disabled]),
 #btnSortear:focus {
-  background-color: #0056b3;
-  box-shadow: 0 6px 12px rgb(0 86 179 / 0.7);
+  background-color: #125486;
+  box-shadow: 0 3px 8px rgb(18 84 134 / 0.25);
   outline: none;
 }
 
 /* Container dos botões semana */
 .botoesSemana {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-top: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 0;
 }
 
 /* Total arrecadado */
 #totalArrecadado {
   font-size: 1.3em;
   font-weight: 700;
-  color: #28a745;
+  color: #267647;
   text-align: center;
   margin-bottom: 25px;
 }
@@ -320,34 +300,172 @@ input[type="checkbox"]:focus {
   }
 }
 
-/* Responsividade básica */
 @media (max-width: 600px) {
-  th,
-  td {
-    font-size: 0.85em;
-    padding: 8px 10px;
+  body {
+    padding: 16px 12px 24px;
   }
 
-  td:nth-child(3) {
-    min-width: 90px;
-    max-width: 120px;
-    font-size: 0.95em;
+  .topo-fixo {
+    padding: 16px 12px;
   }
 
-  input[type="text"] {
-    min-width: 70px;
-    max-width: 110px;
-    font-size: 0.95em;
-  }
-
-  #btnVoltar,
-  #btnSortear,
-  #btnMarcarTodos {
-    padding: 10px 18px;
-    font-size: 0.95em;
+  #totalArrecadado {
+    font-size: 1.2em;
+    margin-bottom: 18px;
   }
 
   #filtrosPagamento {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
+  }
+
+  .filtro-btn {
+    min-width: 0;
+    padding: 8px 5px;
+    font-size: 0.82rem;
+  }
+
+  #btnMarcarTodos {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  #barraProgresso {
+    margin-bottom: 14px;
+  }
+
+  .botoesSemana {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  #btnVoltar,
+  #btnSortear {
+    width: 100%;
+    margin: 0;
+    padding: 10px 8px;
+    font-size: 0.92rem;
+  }
+
+  #tabelaContainer {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  table,
+  tbody {
+    display: block;
+  }
+
+  thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+  }
+
+  table {
+    min-width: 0;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  tbody tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    margin-bottom: 10px;
+    overflow: hidden;
+    border: 1px solid #dfe6ed;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 6px rgb(25 55 85 / 0.06);
+  }
+
+  tbody td {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 10px;
+    border-bottom: 1px solid #edf0f3;
+    text-align: left;
+  }
+
+  tbody td::before {
+    flex: 0 0 auto;
+    color: #536578;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  tbody td:nth-child(1)::before {
+    content: "Nº";
+  }
+
+  tbody td:nth-child(1) {
+    gap: 8px;
+    background: #edf5fc;
+    color: #174f7a;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  tbody td:nth-child(2)::before {
+    content: "Data";
+  }
+
+  tbody td:nth-child(3) {
+    grid-column: 1 / -1;
+    min-width: 0;
+    max-width: none;
+    word-break: normal;
+  }
+
+  tbody td:nth-child(3)::before {
+    content: "Nome";
+  }
+
+  tbody td:nth-child(4)::before {
+    content: "Sorteio";
+  }
+
+  tbody td:nth-child(4):empty::after {
+    content: "Ainda não";
+    color: #536578;
+    font-size: 0.85rem;
+  }
+
+  tbody td:nth-child(5)::before {
+    content: "Pagou?";
+  }
+
+  tbody td:last-child {
+    border-bottom: 0;
+  }
+
+  tbody tr.pagou {
+    background-color: #edf7ef;
+  }
+
+  tbody tr.sorteado:not(.pagou) {
+    background-color: #eef6fd;
+  }
+
+  input[type="text"] {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding: 8px;
+  }
+
+  input[type="checkbox"] {
+    flex: 0 0 auto;
   }
 }

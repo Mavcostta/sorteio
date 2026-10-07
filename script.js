@@ -179,7 +179,7 @@ function atualizarSemana() {
     semanaAtualP.innerHTML = `Semana atual: <span id=\"semanaAtual\">${semanaAtual}</span> de ${totalSemanas}`;
   }
   if (tituloPrincipal) {
-    tituloPrincipal.textContent = `Sorteio Semanal (${totalSemanas} semanas)`;
+    tituloPrincipal.textContent = "Sorteio Semanal da Família";
   }
   // Atualiza referência global do span
   window.semanaSpan = document.getElementById("semanaAtual");
@@ -246,127 +246,5 @@ document.getElementById("btnMarcarTodos").addEventListener("click", () => {
   atualizarTotal();
   renderLista(document.querySelector(".filtro-btn.ativo").dataset.filtro);
 });
-
-// --- NOVO SORTEIO ---
-
-document.addEventListener("DOMContentLoaded", function () {
-  const btnNovoSorteio = document.getElementById("btnNovoSorteio");
-  const btnEditarSorteio = document.getElementById("btnEditarSorteio");
-  const modalNovoSorteio = document.getElementById("modalNovoSorteio");
-  const fecharModalNovoSorteio = document.getElementById(
-    "fecharModalNovoSorteio"
-  );
-  const formNovoSorteio = document.getElementById("formNovoSorteio");
-  const inputSemanas = document.getElementById("inputSemanas");
-  const inputValor = document.getElementById("inputValor");
-  const inputParticipantes = document.getElementById("inputParticipantes");
-  const tituloModalSorteio = document.getElementById("tituloModalSorteio");
-
-  let modoEdicao = false;
-
-  if (
-    !btnNovoSorteio ||
-    !btnEditarSorteio ||
-    !modalNovoSorteio ||
-    !fecharModalNovoSorteio ||
-    !formNovoSorteio ||
-    !inputSemanas ||
-    !inputValor ||
-    !inputParticipantes ||
-    !tituloModalSorteio
-  ) {
-    alert(
-      "Erro ao carregar elementos do Sorteio. Atualize a página ou verifique o HTML."
-    );
-    return;
-  }
-
-  btnNovoSorteio.addEventListener("click", () => {
-    modoEdicao = false;
-    tituloModalSorteio.textContent = "Novo Sorteio";
-    inputParticipantes.value = nomes.join("\n");
-    inputSemanas.value = sorteios.length;
-    inputValor.value = 100;
-    modalNovoSorteio.style.display = "block";
-  });
-
-  btnEditarSorteio.addEventListener("click", () => {
-    modoEdicao = true;
-    tituloModalSorteio.textContent = "Editar Sorteio";
-    inputParticipantes.value = nomes.join("\n");
-    inputSemanas.value = sorteios.length;
-    inputValor.value = 100;
-    modalNovoSorteio.style.display = "block";
-  });
-
-  fecharModalNovoSorteio.addEventListener("click", () => {
-    modalNovoSorteio.style.display = "none";
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === modalNovoSorteio) modalNovoSorteio.style.display = "none";
-  });
-
-  formNovoSorteio.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const novasSemanas = Math.max(1, parseInt(inputSemanas.value));
-    const novoValor = Math.max(1, parseInt(inputValor.value));
-    const novosNomes = inputParticipantes.value
-      .split(/\r?\n/)
-      .map((n) => n.trim())
-      .filter((n) => n);
-    if (novosNomes.length < novasSemanas) {
-      alert(
-        "A quantidade de participantes deve ser igual ou maior que o número de semanas."
-      );
-      return;
-    }
-    nomes = novosNomes;
-    if (modoEdicao) {
-      // Mantém semanaAtual e sorteios já realizados, mas ajusta arrays se necessário
-      if (novasSemanas !== sorteios.length) {
-        sorteios.length = novasSemanas;
-        pagamentos.length = novasSemanas;
-        for (let i = 0; i < novasSemanas; i++) {
-          if (!pagamentos[i]) pagamentos[i] = Array(nomes.length).fill(false);
-        }
-      }
-      for (let i = 0; i < pagamentos.length; i++) {
-        pagamentos[i].length = nomes.length;
-        for (let j = 0; j < nomes.length; j++) {
-          if (typeof pagamentos[i][j] !== "boolean") pagamentos[i][j] = false;
-        }
-      }
-      salvarDados();
-      modalNovoSorteio.style.display = "none";
-      atualizarSemana();
-      alert("Sorteio editado!");
-    } else {
-      semanaAtual = 1;
-      sorteios = Array(novasSemanas).fill(null);
-      pagamentos = Array.from({ length: novasSemanas }, () =>
-        Array(nomes.length).fill(false)
-      );
-      // Marca o primeiro sorteado se já quiser (opcional)
-      // sorteios[0] = nomes[0];
-      // pagamentos[0][0] = true;
-      localStorage.clear();
-      salvarDados();
-      modalNovoSorteio.style.display = "none";
-      atualizarSemana();
-      alert("Novo sorteio iniciado!");
-    }
-  });
-});
-
-function limparDados() {
-  localStorage.removeItem("nomes");
-  localStorage.removeItem("sorteios");
-  localStorage.removeItem("pagamentos");
-  localStorage.removeItem("semanaAtual");
-  location.reload();
-}
-
-document.getElementById("btnLimpar").addEventListener("click", limparDados);
 
 atualizarSemana();

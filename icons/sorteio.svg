@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <linearGradient id="fundo" x1="48" y1="24" x2="464" y2="488" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2785c2"/>
+      <stop offset="1" stop-color="#104b7c"/>
+    </linearGradient>
+    <linearGradient id="tambor" x1="155" y1="104" x2="360" y2="352" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffdf4"/>
+      <stop offset="1" stop-color="#e5edf2"/>
+    </linearGradient>
+    <linearGradient id="dourado" x1="188" y1="339" x2="328" y2="419" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffe28a"/>
+      <stop offset="1" stop-color="#f4b942"/>
+    </linearGradient>
+    <clipPath id="recorteTambor">
+      <circle cx="256" cy="221" r="110"/>
+    </clipPath>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#fundo)"/>
+  <circle cx="78" cy="132" r="7" fill="#fff4c4"/>
+  <circle cx="425" cy="116" r="6" fill="#fff4c4"/>
+  <circle cx="425" cy="298" r="8" fill="#f4b942"/>
+  <path d="m115 246 8 17 18 2-14 12 4 18-16-10-16 10 4-18-14-12 18-2 8-17Z" fill="#f4b942"/>
+  <path d="m400 184 6 12 13 2-10 9 3 13-12-7-12 7 3-13-10-9 13-2 6-12Z" fill="#fff4c4"/>
+
+  <path d="m354 178 54-42 18 23-54 43" fill="none" stroke="#f4b942" stroke-linecap="round" stroke-linejoin="round" stroke-width="17"/>
+  <path d="m160 324-34 31m226-31 34 31" fill="none" stroke="#fff4c4" stroke-linecap="round" stroke-width="16"/>
+  <circle cx="256" cy="221" r="128" fill="url(#tambor)" stroke="#fff4c4" stroke-width="13"/>
+  <g clip-path="url(#recorteTambor)" fill="none" stroke="#b9cad6" stroke-width="9">
+    <path d="M145 221h222M256 111v220M178 143l156 156m0-156L178 299"/>
+  </g>
+
+  <g stroke="#fff" stroke-width="5">
+    <circle cx="211" cy="180" r="27" fill="#f36f68"/>
+    <circle cx="278" cy="164" r="27" fill="#f4bd46"/>
+    <circle cx="309" cy="222" r="27" fill="#53b98b"/>
+    <circle cx="237" cy="239" r="27" fill="#6e91e8"/>
+    <circle cx="282" cy="283" r="27" fill="#e58ab6"/>
+  </g>
+  <g fill="#fff" opacity=".72">
+    <circle cx="203" cy="171" r="7"/>
+    <circle cx="270" cy="155" r="7"/>
+    <circle cx="301" cy="213" r="7"/>
+    <circle cx="229" cy="230" r="7"/>
+    <circle cx="274" cy="274" r="7"/>
+  </g>
+
+  <path d="M174 357h164a19 19 0 0 1 19 19v30a19 19 0 0 1-19 19H174a19 19 0 0 1-19-19v-30a19 19 0 0 1 19-19Z" fill="url(#dourado)" stroke="#fff4c4" stroke-width="7"/>
+  <path d="m256 365 7 14 16 2-12 11 3 16-14-8-14 8 3-16-12-11 16-2 7-14Z" fill="#fffdf4"/>
+</svg>

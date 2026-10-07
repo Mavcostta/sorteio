@@ -3,22 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Sorteio Semanal</title>
+    <title>Sorteio Semanal da Família</title>
+    <link rel="icon" type="image/svg+xml" href="icons/sorteio.svg" />
     <link rel="stylesheet" href="style.css" />
     <link rel="manifest" href="manifest.json" />
-    <meta name="theme-color" content="#0066cc" />
+    <meta name="theme-color" content="#1769aa" />
     <script>
-      if ("serviceWorker" in navigator) {
+      if (
+        ["http:", "https:"].includes(window.location.protocol) &&
+        "serviceWorker" in navigator
+      ) {
         navigator.serviceWorker.register("service-worker.js");
       }
     </script>
   </head>
   <body>
-    <h1>Sorteio Semanal</h1>
+    <header class="cabecalho">
+      <h1>Sorteio Semanal da Família</h1>
+      <p class="subtitulo">Pagamentos e vez de cada participante</p>
+      <p class="instrucoes">
+        Marque os pagamentos da semana. Quando todos pagarem, toque em
+        “Sortear Próximo”.
+      </p>
+    </header>
 
     <!-- Cabeçalho fixo -->
     <div class="topo-fixo" role="banner">
-      <p>Semana atual: <span id="semanaAtual">1</span> de 31</p>
+      <p class="semana-atual">
+        Estamos na semana <span id="semanaAtual">1</span> de 31
+      </p>
 
       <p id="totalArrecadado" aria-live="polite" aria-atomic="true">R$ 0,00</p>
 
@@ -74,22 +87,12 @@
       </div>
     </div>
 
-    <button id="btnLimpar" title="Resetar todos os dados e começar do zero">
-      Resetar Sorteio
-    </button>
-
-    <button id="btnNovoSorteio" title="Configurar novo sorteio">
-      Novo Sorteio
-    </button>
-    <button id="btnEditarSorteio" title="Editar sorteio atual">
-      Editar Sorteio
-    </button>
-
     <!-- Tabela com rolagem -->
     <div
       id="tabelaContainer"
       role="region"
       aria-label="Lista de participantes e status de pagamento"
+      tabindex="0"
     >
       <table>
         <thead>
@@ -107,41 +110,5 @@
 
     <script src="script.js"></script>
 
-    <!-- Modal Novo Sorteio -->
-    <div id="modalNovoSorteio" class="modal" style="display: none">
-      <div class="modal-content">
-        <span id="fecharModalNovoSorteio" class="close">&times;</span>
-        <h2 id="tituloModalSorteio">Novo Sorteio</h2>
-        <form id="formNovoSorteio">
-          <label for="inputSemanas">Quantidade de semanas:</label>
-          <input
-            type="number"
-            id="inputSemanas"
-            min="1"
-            max="100"
-            value="36"
-            required
-          /><br /><br />
-          <label for="inputValor">Valor por semana (R$):</label>
-          <input
-            type="number"
-            id="inputValor"
-            min="1"
-            value="100"
-            required
-          /><br /><br />
-          <label for="inputParticipantes">Participantes (um por linha):</label
-          ><br />
-          <textarea
-            id="inputParticipantes"
-            rows="8"
-            style="width: 100%"
-            required
-          ></textarea
-          ><br /><br />
-          <button type="submit">Salvar e Iniciar Sorteio</button>
-        </form>
-      </div>
-    </div>
   </body>
 </html>
