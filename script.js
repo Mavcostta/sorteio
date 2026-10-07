@@ -1,43 +1,48 @@
-// Data do primeiro sorteio (quinta-feira, 30/01/2026)
-const dataInicio = new Date(2026, 0, 30); // mês 0-based (0 = janeiro)
+const sorteioConfiguracao = "2026-10-02";
+
+if (localStorage.getItem("sorteioConfiguracao") !== sorteioConfiguracao) {
+  ["nomes", "sorteios", "pagamentos", "semanaAtual"].forEach((chave) =>
+    localStorage.removeItem(chave)
+  );
+  localStorage.setItem("sorteioConfiguracao", sorteioConfiguracao);
+}
+
+// Data do primeiro sorteio (02/10/2026)
+const dataInicio = new Date(2026, 9, 2); // mês 0-based
 
 // Lista de nomes (pode conter repetidos)
 let nomes = JSON.parse(localStorage.getItem("nomes")) || [
   "Vanda",
+  "Vanda",
   "Cristiane",
-  "Cristiane",
-  "Noemi",
-  "Noemi",
-  "Gil",
-  "Dude",
-  "Diza",
-  "Graça",
   "Ilza",
-  "Aldo",
-  "Aldo",
-  "A: Ilza",
+  "Barbosa",
   "Ana",
   "Ana",
-  "Cristiane",
-  "Cristiane",
-  "Deja",
-  "Marcia",
-  "Marcia",
-  "Cristiane",
-  "Ir. Marcio",
-  "Ir. Rosa",
-  "Dane",
-  "Socorro",
-  "Emerson",
-  "Ilza",
-  "Suely",
-  "Cleide",
-  "Dane",
+  "Aldo",
+  "Macia",
   "Laudjane",
-  "Ir. Alex",
+  "Aldo",
+  "Diza",
+  "Macia",
+  "Aldo",
+  "Gil",
+  "Aldo",
+  "Irmão Macio",
+  "Dja",
+  "Aldo",
+  "Ir,Dane",
+  "Cleide",
+  "Flávia",
+  "Hemersom",
+  "Cristiane",
   "Dane",
-  "Dane",
-  "Vitória"
+  "Macia L",
+  "Márcia L",
+  "Ilza",
+  "ILza",
+  "Vitória",
+  "Vitória",
 ];
 
 // Semana atual começa em 1, pois semana 1 é índice 0 no array
@@ -45,13 +50,13 @@ let semanaAtual = Number(localStorage.getItem("semanaAtual")) || 1;
 
 // Sorteios: array de nomes sorteados por semana
 let sorteios =
-  JSON.parse(localStorage.getItem("sorteios")) || Array(35).fill(null);
+  JSON.parse(localStorage.getItem("sorteios")) || Array(nomes.length).fill(null);
 if (!sorteios[0]) sorteios[0] = nomes[0]; // semana 1 já tem o primeiro sorteado
 
 // Pagamentos: array de semanas, cada semana é array de booleanos (pagamento por índice)
 let pagamentos =
   JSON.parse(localStorage.getItem("pagamentos")) ||
-  Array.from({ length: 35 }, () => Array(nomes.length).fill(false));
+  Array.from({ length: nomes.length }, () => Array(nomes.length).fill(false));
 
 // Se não tinha dados no localStorage, marca pagamento do sorteado da semana 1
 if (!localStorage.getItem("pagamentos")) pagamentos[0][0] = true;
@@ -68,6 +73,7 @@ function salvarDados() {
   localStorage.setItem("sorteios", JSON.stringify(sorteios));
   localStorage.setItem("pagamentos", JSON.stringify(pagamentos));
   localStorage.setItem("semanaAtual", semanaAtual);
+  localStorage.setItem("sorteioConfiguracao", sorteioConfiguracao);
 }
 
 function formatarData(date) {
